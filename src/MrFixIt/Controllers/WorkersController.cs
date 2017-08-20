@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MrFixIt.Models;
 using Microsoft.EntityFrameworkCore;
@@ -12,9 +9,11 @@ namespace MrFixIt.Controllers
     public class WorkersController : Controller
     {
         private MrFixItContext db = new MrFixItContext();
+
         public IActionResult Index()
-        {
-            var thisWorker = db.Workers.Include(i =>i.Jobs).FirstOrDefault(i => i.UserName == User.Identity.Name);
+        { //if condition looks for worker account, else returns view to Create worker account
+            Worker thisWorker = db.Workers.Include(w =>w.Jobs)
+                                          .FirstOrDefault(w => w.UserName == User.Identity.Name);
             if (thisWorker != null)
             {
                 return View(thisWorker);

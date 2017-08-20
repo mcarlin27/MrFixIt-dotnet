@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MrFixIt.Models;
 
@@ -13,11 +10,14 @@ namespace MrFixIt.Controllers
 
         public IActionResult Index()
         {
+            //if condition determines if user is authenticated and passes user's worker profile into model
             if (User.Identity.IsAuthenticated)
             {
-                var thisWorker = db.Workers.FirstOrDefault(item => item.UserName == User.Identity.Name);
+                Worker thisWorker = db.Workers.FirstOrDefault(w => w.UserName == User.Identity.Name);
                 return View(thisWorker);
-            } else
+                //changed 'var' and 'item' syntax to 'Worker' and 'w' for improved clarity
+            }
+            else
             {
                 return View();
             }

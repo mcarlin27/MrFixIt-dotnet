@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using MrFixIt.Models;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +12,7 @@ namespace MrFixIt.Controllers
 
         public IActionResult Index()
         {
-            return View(db.Jobs.Include(i => i.Worker).ToList());
+            return View(db.Jobs.Include(j => j.Worker).ToList());
         }
 
         [Authorize]
@@ -38,13 +35,13 @@ namespace MrFixIt.Controllers
         {
             var thisItem = db.Jobs.FirstOrDefault(items => items.JobId == id);
             return View(thisItem);
-        }
+        } //when claiming a job becomes an AJAX action, this code will become unnecessary
 
         [Authorize]
         [HttpPost]
         public IActionResult Claim(Job job)
-        { //this process is accessible even when user isn't logged in; ought to reroute to authorization
-            job.Worker = db.Workers.FirstOrDefault(i => i.UserName == User.Identity.Name);
+        { //this process is accessible/visible even when user isn't logged in; ought to reroute to authorization
+            job.Worker = db.Workers.FirstOrDefault(w => w.UserName == User.Identity.Name);
             db.Entry(job).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
