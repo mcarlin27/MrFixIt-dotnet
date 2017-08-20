@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using MrFixIt.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MrFixIt.Controllers
 {
@@ -17,11 +18,13 @@ namespace MrFixIt.Controllers
             return View(db.Jobs.Include(i => i.Worker).ToList());
         }
 
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Create(Job job)
         {
@@ -30,12 +33,14 @@ namespace MrFixIt.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         public IActionResult Claim(int id)
         {
             var thisItem = db.Jobs.FirstOrDefault(items => items.JobId == id);
             return View(thisItem);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult Claim(Job job)
         { //this process is accessible even when user isn't logged in; ought to reroute to authorization
