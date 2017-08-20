@@ -6,15 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using MrFixIt.Models;
 using Microsoft.EntityFrameworkCore;
 
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace MrFixIt.Controllers
 {
     public class JobsController : Controller
     {
         private MrFixItContext db = new MrFixItContext();
 
-        // GET: /<controller>/
         public IActionResult Index()
         {
             return View(db.Jobs.Include(i => i.Worker).ToList());
@@ -41,7 +38,7 @@ namespace MrFixIt.Controllers
 
         [HttpPost]
         public IActionResult Claim(Job job)
-        {
+        { //this process is accessible even when user isn't logged in; ought to reroute to authorization
             job.Worker = db.Workers.FirstOrDefault(i => i.UserName == User.Identity.Name);
             db.Entry(job).State = EntityState.Modified;
             db.SaveChanges();

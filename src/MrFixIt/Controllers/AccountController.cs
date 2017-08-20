@@ -7,14 +7,11 @@ using MrFixIt.Models;
 using Microsoft.AspNetCore.Identity;
 using MrFixIt.ViewModels;
 
-// For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace MrFixIt.Controllers
 {
     public class AccountController : Controller
     {
         private MrFixItContext db = new MrFixItContext();
-
 
         //Basic User Account Info here...
         private readonly MrFixItContext _db;
@@ -27,11 +24,6 @@ namespace MrFixIt.Controllers
             _signInManager = signInManager;
             _db = db;
         }
-
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
 
         public IActionResult Index()
         {
