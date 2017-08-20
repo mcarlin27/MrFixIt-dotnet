@@ -2,25 +2,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Worker Profile";
 }
+@model MrFixIt.Models.Worker
 
 @if (User.Identity.IsAuthenticated)
 {
-
     <div class="text-center">
-        <h4>Hello Worker @Model.FirstName @Model.LastName. You are Logged In</h4>
+        <h4>Hello Worker @Model.FirstName @Model.LastName. You are Logged In.</h4>
         <h3>Your Current Jobs:</h3>
-        @foreach (var Job in Model.Jobs)
+        @if (Model.Jobs.Count != 0)
         {
-            <h5>@Job.Title</h5>
-
-        }
-        @if (Model.Avaliable)
+            @foreach (var job in Model.Jobs)
+            {
+                <h5>@job.Title</h5>
+            }
+        } else
         {
-            <h2>Please @Html.ActionLink("select a job", "Index", "Jobs").</h2>
-        }
-        else
-        {
-            <p>You are already assigned to a job.</p>
+            <h5>You have no current jobs!</h5>
+            @if (Model.Avaliable)
+            {
+                <h2>Please @Html.ActionLink("select a job", "Index", "Jobs").</h2>
+            }
         }
     </div>
 }
