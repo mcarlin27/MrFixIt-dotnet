@@ -33,14 +33,14 @@ namespace MrFixIt.Controllers
         [Authorize]
         public IActionResult Claim(int id)
         {
-            var thisItem = db.Jobs.FirstOrDefault(items => items.JobId == id);
-            return View(thisItem);
-        } //when claiming a job becomes an AJAX action, this code will become unnecessary
+            var thisJob = db.Jobs.FirstOrDefault(jobs => jobs.JobId == id);
+            return View(thisJob);
+        }
 
         [Authorize]
         [HttpPost]
         public IActionResult Claim(Job job)
-        { //this process is accessible/visible even when user isn't logged in; ought to reroute to authorization
+        { //this process is accessible/visible even when user isn't logged in; FIXED
             job.Worker = db.Workers.FirstOrDefault(w => w.UserName == User.Identity.Name);
             db.Entry(job).State = EntityState.Modified;
             db.SaveChanges();

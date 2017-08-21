@@ -5,15 +5,38 @@
 
 @model MrFixIt.Models.Job
 
-<h2>Would you like to do this job?</h2>
-<hr />
-@using (Html.BeginForm())
-{
-    @Html.HiddenFor(model => model.JobId)
-    @Html.HiddenFor(model => model.Title)
-    @Html.HiddenFor(model => model.Description)
+<script>
+    $(document).ready(function () {
+        $('.claimForm').submit(function (event) {
+            event.preventDefault();
+            $.ajax({
+                url: '@Url.Action("Claim")',
+                type: 'POST',
+                dataType: 'json',
+                data: $(this).serialize(),
+                success: function (result) {
+                    var successAlert = 'Job claimed!';
+                    $('#claimResult').html(successAlert);
+                    $('.claimConfirm').hide();
+                }
+            });
+        });
+    });
+</script>
 
-    <h4>@Model.Title</h4>
-    <input type="submit" value="Claim This Job" />
-}
+<div class="claimConfirm">
+    <h2>You have claimed this job. Please confirm by clicking 'Claim This Job.'</h2>
+    <hr />
+    @using (Html.BeginForm(new { @class = "claimForm" } ))
+    {
+        @Html.HiddenFor(model => model.JobId)
+        @Html.HiddenFor(model => model.Title)
+        @Html.HiddenFor(model => model.Description)
+
+        <h4>@Model.Title</h4>
+        <input type="submit" value="Claim This Job" />
+    }
+</div>
+<div id="claimResult"></div>
+
 <p>@Html.ActionLink("Back to list", "Index")</p>

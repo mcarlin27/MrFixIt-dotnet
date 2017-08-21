@@ -3,9 +3,24 @@
     ViewBag.Title = "Current Jobs";
 }
 
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#claimJob').click(function () {
+            $.ajax({
+                type: 'GET',
+                dataType: 'html',
+                url: '@Url.Action("Claim")',
+                data: {id: $(this).data('id'), text: $(this).data('job') },
+                success: function (result) {
+                    $('#result').html(result);
+                }
+            });
+        });
+    });
+</script>
+
 <div class="text-center">
     <h3>Our Current Jobs</h3>
-    @Html.ActionLink("Add a new job", "Create")
 </div>
 @foreach (var Job in Model)
 {
@@ -16,7 +31,8 @@
         </ul>
         @if (Job.Worker == null)
         {
-        <li class="btn">This job is unclaimed. @Html.ActionLink("Claim This Job", "Claim", new { @text = @Job.Title, id = Job.JobId })</li>
+        <li>This job is unclaimed.</li>
+        <li class="btn" id="claimJob" data-id=@Job.JobId text=@Job.Title>Claim Job</li>
         }
         else
         {
@@ -25,4 +41,6 @@
         }
     </ul>
 }
+<div id="result"></div>
+@Html.ActionLink("Add a new job", "Create")
 
