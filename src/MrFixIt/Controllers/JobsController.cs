@@ -33,7 +33,7 @@ namespace MrFixIt.Controllers
         [Authorize]
         public IActionResult Claim(int id)
         {
-            var thisJob = db.Jobs.FirstOrDefault(jobs => jobs.JobId == id);
+            Job thisJob = db.Jobs.FirstOrDefault(jobs => jobs.JobId == id);
             return View(thisJob);
         }
 
@@ -45,6 +45,29 @@ namespace MrFixIt.Controllers
             db.Entry(job).State = EntityState.Modified;
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult MarkActive(int id)
+        {
+            Job thisJob = db.Jobs.FirstOrDefault(jobs => jobs.JobId == id);
+            thisJob.Pending = true;
+            db.Entry(thisJob).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json(thisJob);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public IActionResult MarkComplete(int id)
+        {
+            Job thisJob = db.Jobs.FirstOrDefault(jobs => jobs.JobId == id);
+            thisJob.Completed = true;
+            thisJob.Pending = false;
+            db.Entry(thisJob).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json(thisJob);
         }
     }
 }

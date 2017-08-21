@@ -3,6 +3,8 @@
     ViewBag.Title = "Current Jobs";
 }
 
+@using System.Security.Claims
+
 <script type="text/javascript">
     $(document).ready(function () {
         $('#claimJob').click(function () {
@@ -12,7 +14,31 @@
                 url: '@Url.Action("Claim")',
                 data: {id: $(this).data('id'), text: $(this).data('job') },
                 success: function (result) {
-                    $('#result').html(result);
+                    $('#result1').html(result);
+                }
+            });
+        });
+        $('#markActive').click(function () {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '@Url.Action("MarkActive")',
+                data: { id: $(this).data('id')},
+                success: function (result) {
+                    var resultMessage = 'Job has been marked active.'
+                    $('#result2').html(resultMessage);
+                }
+            });
+        });
+        $('#markComplete').click(function () {
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: '@Url.Action("MarkComplete")',
+                data: { id: $(this).data('id')},
+                success: function (result) {
+                    var resultMessage = 'Job has been marked completed.'
+                    $('#result3').html(resultMessage);
                 }
             });
         });
@@ -22,6 +48,7 @@
 <div class="text-center">
     <h3>Our Current Jobs</h3>
 </div>
+
 @foreach (var Job in Model)
 {
     <ul>
@@ -31,16 +58,42 @@
         </ul>
         @if (Job.Worker == null)
         {
-        <li>This job is unclaimed.</li>
-        <li class="btn" id="claimJob" data-id=@Job.JobId text=@Job.Title>Claim Job</li>
+        <p>This job is unclaimed.</p>
+        <ul>
+            <li class="btn" id="claimJob" data-id=@Job.JobId text=@Job.Title>Claim Job</li>
+        </ul>
         }
         else
         {
-            <li class="btn">This Job is claimed by @Job.Worker.FirstName @Job.Worker.LastName</li>
-
+            @if (Job.Worker.UserName == User.Identity.Name)
+            {
+                <li class="btn">This Job is claimed by YOU!</li>
+                @if (Job.Pending == false)
+                {
+                    <li class="btn" id="markActive" data-id=@Job.JobId>Mark Active</li>
+                }
+                else
+                {
+                    <p>This Job is currently ACTIVE!</p>
+                }
+                @if (Job.Completed == false)
+                {
+                    <li class="btn" id="markComplete" data-id=@Job.JobId>Mark Complete</li>
+                }
+                else
+                {
+                    <p>This Job has been marked completed.</p>
+                }
+            }
+            else
+            {
+                <li class="btn">This Job is claimed by @Job.Worker.FirstName @Job.Worker.LastName</li>
+            }
         }
     </ul>
 }
-<div id="result"></div>
+<div id="result1"></div>
+<div id="result2"></div>
+<div id="result3"></div>
 @Html.ActionLink("Add a new job", "Create")
 
