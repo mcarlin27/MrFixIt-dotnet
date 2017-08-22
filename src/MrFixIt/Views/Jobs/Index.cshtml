@@ -12,7 +12,7 @@
                 type: 'GET',
                 dataType: 'html',
                 url: '@Url.Action("Claim")',
-                data: {id: $(this).data('id'), text: $(this).data('job') },
+                data: { id: $(this).data('id'), text: $(this).data('job') },
                 success: function (result) {
                     $('#result1').html(result);
                 }
@@ -77,11 +77,11 @@
                 {
                     <li class="markActive btn" vale = "@Job.JobId" data-id=@Job.JobId>Mark Active</li>
                 }
-                else
+                else if (Job.Pending == true && Job.Completed != true)
                 {
                     <p>This Job is currently ACTIVE!</p>
                 }
-                @if (Job.Completed == false)
+                @if (Job.Completed == false && Job.Pending == true)
                 {
                     <li class="markComplete btn" value="@Job.JobId" data-id=@Job.JobId>Mark Complete</li>
                 }

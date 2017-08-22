@@ -64,7 +64,7 @@ namespace MrFixIt.Controllers
         {
             Job thisJob = db.Jobs.FirstOrDefault(jobs => jobs.JobId == jobId);
             thisJob.Completed = true;
-            //thisJob.Pending = false;
+            thisJob.Pending = false;
             db.Entry(thisJob).State = EntityState.Modified;
             db.SaveChanges();
             return Json(thisJob);
