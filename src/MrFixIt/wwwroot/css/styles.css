@@ -2,3 +2,32 @@
     padding-top: 70px;
     color: navy;
 }
+
+.navbar {
+  background-color: #29A036;
+  width: 100vw;
+  margin-top: -8px;
+  margin-left: -8px;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 10px;
+  height: 85px;
+}
+.navbar-brand {
+    margin-top: 20px;
+    text-decoration: none;
+    font-size: 50px;
+    color: #FFF;
+}
+  ul
+    flex-direction: row
+    display: flex
+    li
+      margin: 0px 20px
+      list-style-type: none
+
+.navbar
+  ul
+    li
+      a:hover
+        color: #393D3F

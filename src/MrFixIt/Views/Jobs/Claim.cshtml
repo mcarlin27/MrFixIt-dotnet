@@ -5,23 +5,6 @@
 
 @model MrFixIt.Models.Job
 
-<script>
-    $(document).ready(function () {
-        $('.claimForm').submit(function (event) {
-            event.preventDefault();
-            $.ajax({
-                url: '@Url.Action("Claim")',
-                type: 'POST',
-                dataType: 'json',
-                data: $(this).serialize(),
-                success: function (result) {
-                    $('.claimConfirm').hide();
-                }
-            });
-        });
-    });
-</script>
-
 <div class="claimConfirm">
     <h2>You have claimed this job. Please confirm by clicking 'Claim This Job.'</h2>
     <hr />
