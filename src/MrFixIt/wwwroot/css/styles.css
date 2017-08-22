@@ -19,15 +19,3 @@
     font-size: 50px;
     color: #FFF;
 }
-  ul
-    flex-direction: row
-    display: flex
-    li
-      margin: 0px 20px
-      list-style-type: none
-
-.navbar
-  ul
-    li
-      a:hover
-        color: #393D3F

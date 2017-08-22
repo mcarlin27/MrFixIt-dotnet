@@ -49,9 +49,9 @@ namespace MrFixIt.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult MarkActive(int id)
+        public IActionResult MarkActive(int jobId)
         {
-            Job thisJob = db.Jobs.FirstOrDefault(jobs => jobs.JobId == id);
+            Job thisJob = db.Jobs.FirstOrDefault(jobs => jobs.JobId == jobId);
             thisJob.Pending = true;
             db.Entry(thisJob).State = EntityState.Modified;
             db.SaveChanges();
@@ -60,11 +60,11 @@ namespace MrFixIt.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult MarkComplete(int id)
+        public IActionResult MarkComplete(int jobId)
         {
-            Job thisJob = db.Jobs.FirstOrDefault(jobs => jobs.JobId == id);
+            Job thisJob = db.Jobs.FirstOrDefault(jobs => jobs.JobId == jobId);
             thisJob.Completed = true;
-            thisJob.Pending = false;
+            //thisJob.Pending = false;
             db.Entry(thisJob).State = EntityState.Modified;
             db.SaveChanges();
             return Json(thisJob);

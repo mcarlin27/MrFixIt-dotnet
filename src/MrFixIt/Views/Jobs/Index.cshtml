@@ -19,23 +19,28 @@
             });
         });
         $('#markActive').click(function () {
+            var jobId = $(this).val();
+            console.log(jobId);
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
                 url: '@Url.Action("MarkActive")',
-                data: { id: $(this).data('id')},
+                data: { jobId },
                 success: function (result) {
                     var resultMessage = 'Job has been marked active.'
                     $('#result2').html(resultMessage);
                 }
             });
         });
-        $('#markComplete').click(function () {
+        $('.markComplete').click(function () {
+            var jobId = $(this).val();
+            console.log(jobId);
+            console.log('hello');
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
                 url: '@Url.Action("MarkComplete")',
-                data: { id: $(this).data('id')},
+                data: { jobId },
                 success: function (result) {
                     var resultMessage = 'Job has been marked completed.'
                     $('#result3').html(resultMessage);
@@ -68,9 +73,9 @@
             @if (Job.Worker.UserName == User.Identity.Name)
             {
                 <li class="btn">This Job is claimed by YOU!</li>
-                @if (Job.Pending == false)
+                @if (Job.Pending == false && Job.Completed == false)
                 {
-                    <li class="btn" id="markActive" data-id=@Job.JobId>Mark Active</li>
+                    <li class="markActive btn" vale = "@Job.JobId" data-id=@Job.JobId>Mark Active</li>
                 }
                 else
                 {
@@ -78,7 +83,7 @@
                 }
                 @if (Job.Completed == false)
                 {
-                    <li class="btn" id="markComplete" data-id=@Job.JobId>Mark Complete</li>
+                    <li class="markComplete btn" value="@Job.JobId" data-id=@Job.JobId>Mark Complete</li>
                 }
                 else
                 {
